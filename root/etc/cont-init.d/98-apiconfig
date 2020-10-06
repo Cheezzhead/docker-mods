@@ -1,0 +1,12 @@
+#!/usr/bin/with-contenv bash
+
+# copy api configs
+cp -R /defaults/api-confs /config/nginx/
+
+# copy api gateway defaults if needed
+[[ ! -f /config/nginx/api_auth.conf ]] && \
+	cp /defaults/api_auth.conf /config/nginx/api_auth.conf
+[[ ! -f /config/nginx/api_gateway.conf ]] && \
+	cp /defaults/api_gateway.conf /config/nginx/api_gateway.conf
+[[ ! -f /config/nginx/api_json_errors.conf ]] && \
+	cp /defaults/api_json_errors.conf /config/nginx/api_json_errors.conf

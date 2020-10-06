@@ -1,6 +1,6 @@
 # API Gateway - Docker mod for swag
 
-This mod adds nginx configuration files that facilitate an API gateway at the api.* subdomain. In doing so, you can lock down the default api endpoint of each service to the outside and direct all external api requests to this subdomain.
+This mod adds nginx configuration files that facilitate an API gateway at the api.* subdomain. In doing so, you can lock down the default api endpoint of each service to the outside and direct all external api requests to this subdomain. E.g. `https://domain.tld/radarr/api` becomes `https://api.domain.tld/radarr/api`.
 
 ## Features
 * The gateway is protected with http authentication, which should be compatible with most API services.
