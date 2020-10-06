@@ -1,0 +1,12 @@
+location ^~ /radarr/api {
+    # API Name (for logging)
+    set $api_name "Radarr";
+
+    # Authentication
+    include api_auth.conf;
+
+    # Proxy options
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_radarr radarr;
+    proxy_pass http://$upstream_radarr:7878;
+}

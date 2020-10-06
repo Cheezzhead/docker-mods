@@ -1,0 +1,14 @@
+location ^~ /netdata/api {
+    # API Name (for logging)
+    set $api_name "Netdata";
+
+    # Authentication
+    include api_auth.conf;
+
+    # Proxy options
+    include /config/nginx/proxy.conf;
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_netdata netdata;
+    rewrite /netdata(.*) $1 break;
+    proxy_pass http://$upstream_netdata:19999;
+}

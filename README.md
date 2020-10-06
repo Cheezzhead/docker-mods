@@ -1,17 +1,19 @@
-# Rsync - Docker mod for openssh-server
+# API Gateway - Docker mod for swag
 
-This mod adds rsync to openssh-server, to be installed/updated during container start.
+This mod adds nginx configuration files that facilitate an API gateway at the api.* subdomain. In doing so, you can lock down the default api endpoint of each service to the outside and direct all external api requests to this subdomain.
 
-In openssh-server docker arguments, set an environment variable `DOCKER_MODS=linuxserver/mods:openssh-server-rsync`
+## Features
+* The gateway is protected with http authentication, which should be compatible with most API services.
+* Separate log file for all API requests, with the option of further dividing by API service (by uncommenting the relevant lines in each service's conf file)
+* Errors are returned as JSON, with 404 (invalid paths) treated as bad requests (400)
 
-If adding multiple mods, enter them in an array separated by `|`, such as `DOCKER_MODS=linuxserver/mods:openssh-server-rsync|linuxserver/mods:openssh-server-mod2`
+## Limitations
+* Only services proxied over subfolder are compatible (although the relevant configuration files could be included on a subdomain level with ease)
 
-# Mod creation instructions
+## Setup
+* In swag docker arguments, set an environment variable `DOCKER_MODS=linuxserver/mods:swag-apigateway`
+  * If adding multiple mods, enter them in an array separated by `|`, such as `DOCKER_MODS=linuxserver/mods:swag-apigateway|linuxserver/mods:swag-mod2`
+* create an htpasswd file at `/config/etc/.htpasswd`: `docker exec -ti swag htpasswd -c /config/etc/.htpasswd $USER`. You will be prompted for the password
+* Remove the `.sample` suffix from any files in `/config/nginx/api-confs` you wish to use
+* Reload or restart the swag container
 
-* Fork the repo, create a new branch based on the branch `template`.
-* Edit the `Dockerfile` for the mod. `Dockerfile.complex` is only an example and included for reference; it should be deleted when done.
-* Inspect the `root` folder contents. Edit, add and remove as necessary.
-* Edit this readme with pertinent info, delete these instructions.
-* Finally edit the `travis.yml`. Customize the build branch, and the vars for `BASEIMAGE` and `MODNAME`.
-* Ask the team to create a new branch named `<baseimagename>-<modname>`. Baseimage should be the name of the image the mod will be applied to. The new branch will be based on the `template` branch.
-* Submit PR against the branch created by the team.

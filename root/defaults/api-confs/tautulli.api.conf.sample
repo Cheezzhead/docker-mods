@@ -1,0 +1,12 @@
+location ^~ /tautulli/api {
+    # API Name (for logging)
+    set $api_name "Tautulli";
+
+    # Authentication
+    include api_auth.conf;
+
+    # Proxy options
+    resolver 127.0.0.11 valid=30s;
+    set $upstream_tautulli tautulli;
+    proxy_pass http://$upstream_tautulli:8181;
+}
